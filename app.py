@@ -7,6 +7,7 @@ import hashlib
 import os
 import json
 import random
+import re
 import html as ht
 # import sys
 from sys import stderr
@@ -322,8 +323,10 @@ def success_edit():
         'photolink2': photolink2,
         'photolink3': photolink3}
         if str(user_phone) != "":
-            print("went into if stmt")
-            add_user_phone(netid=user_info['netid'], phone_number=user_phone)
+             if re.match("[0-9]{10}", user_phone) and len(user_phone) == 10:
+                success_add_phone = add_user_phone(netid=user_info['netid'], phone_number=user_phone)
+                if success_add_phone is None or not success_add_phone:
+                    print("phone number not added: " + str(user_phone) + "net id = " + user_info['netid'])
         elif str(user_phone) == "" or user_phone == None:
             print("went into elif stmt")
             add_user_phone(netid=user_info['netid'], phone_number="unknown")
@@ -385,9 +388,10 @@ def success_sell():
         'photolink2': photolink2,
         'photolink3': photolink3}
         if str(user_phone) != "":
-            success_add_phone = add_user_phone(netid=user_info['netid'], phone_number=user_phone)
-            if not success_add_phone or success_add_phone is None:
-                print("phone number not added: " + str(user_phone) + "net id = " + user_info['netid'])
+             if re.match("[0-9]{10}", user_phone) and len(user_phone) == 10:
+                success_add_phone = add_user_phone(netid=user_info['netid'], phone_number=user_phone)
+                if success_add_phone is None or not success_add_phone:
+                    print("phone number not added: " + str(user_phone) + "net id = " + user_info['netid'])
         elif str(user_phone) == "" or user_phone == None:
             print("went into elif stmt")
             success_add_phone = add_user_phone(netid=user_info['netid'], phone_number="unknown")

@@ -133,7 +133,14 @@
             </div>
             <div class="form-group m-2">
                 <label id="input_phone_text" style="letter-spacing: 0.1em;">Phone Number (optional)</label>
-                <input id="input_phone" class="form-control" type="number" step="0.1" maxlength="11" name="phone">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">+1</span> 
+                    </div>
+                    <input id="input_phone" class="form-control" type="tel" pattern="[0-9]{10}" maxlength="10" name="phone" placeholder="enter a US phone number (no dashes, just digits)"
+                    oninvalid="this.setCustomValidity('Please match required format: 10 digits, no dashes')"
+                    oninput="this.setCustomValidity('')">
+                </div>
                 <p class="mb-0 text-secondary">*if you would like reservers of this item to contact you via text*</p>
             </div>
             <div id="photoupload" class="form-group m-2">
