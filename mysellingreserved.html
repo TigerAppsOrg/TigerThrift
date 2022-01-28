@@ -54,6 +54,12 @@
                                         {% else %}
                                         <p class="card-text" style="height: 150px;"><i>{{item['reservation_time_left']}} to complete reservation</i></p>
                                         {% endif %}
+                                        {% if item['reservation_time_left'] == "YOUR RESERVATION HAS EXPIRED! 0 days left" %}
+                                        <form action="/relist" onSubmit="return confirm('Are you sure you want to re-list your item? Your item will go back on the marketplace.');" method='POST' class="pt-2">
+                                            <input type = "hidden" name="itemid" value="{{item['itemid']}}">
+                                            <button class="card-text btn btn-sm btn-dark px-4"><p style="color:white" class="m-0">re-list item</p></button>
+                                        </form>
+                                        {% endif %}
                                         <form action="/itemdetails" method='GET'>
                                             <input type = "hidden" name="itemid" value="{{item['itemid']}}">
                                             <button type="submit" class="card-text btn btn-sm btn-dark px-4">details</button>
@@ -62,6 +68,7 @@
                                             <input type = "hidden" name="itemid" value="{{item['itemid']}}">
                                             <button class="card-text btn btn-sm btn-dark px-4"><p style="color:white" class="m-0">complete sale <span style="color: #85c285;">✓</span></p></button>
                                         </form>
+                                      
                                     </div>
                                 </div>
                             </div>

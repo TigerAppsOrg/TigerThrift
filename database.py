@@ -235,6 +235,24 @@ def edit_item_db(item, user_info):
        print(ex, file=stderr)
        return False
 
+# relist item after reservation expiration
+
+def relist_item(itemid):
+    DATABASE_URL = os.environ.get('DATABASE_URL')
+
+    try:
+        with connect (DATABASE_URL, sslmode='require') as connection:
+            with closing(connection.cursor()) as cursor:
+                stmt_str = ('UPDATE items SET status=0 WHERE itemid=%s;')
+                cursor.execute(stmt_str, [itemid])
+                print("relisted item, changed status in database!")
+                connection.commit()
+                return True
+
+    except Exception as ex:
+       print(ex, file=stderr)
+       return False
+       
 # return item details given an itemid, or false if unsuccessful
 def item_details(itemid):
     DATABASE_URL = os.environ.get('DATABASE_URL')

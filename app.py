@@ -18,7 +18,7 @@ from flask import Flask, redirect, url_for, request, make_response
 from titlecase import titlecase
 from flask import render_template
 from datetime import datetime
-from database import add_user, get_whitelist_user_info, get_user_phone, add_user_phone, add_item, edit_item_db, reserve_item, search_items, item_details, reserved_items, seller_reservations, items_sold_in_past, past_purchases, get_seller_and_item_info, delete_reserve, complete_reserve, all_brands, remove_item, curr_active_items, reserved_netid, bought_netid
+from database import add_user, get_whitelist_user_info, get_user_phone, add_user_phone, add_item, edit_item_db, reserve_item, search_items, item_details, reserved_items, seller_reservations, items_sold_in_past, past_purchases, get_seller_and_item_info, delete_reserve, complete_reserve, all_brands, remove_item, curr_active_items, reserved_netid, bought_netid, relist_item
 from sendemail import send_buyer_reservation_notification, send_seller_reservation_notification, send_seller_cancellation, send_buyer_cancellation
 from casclient import CasClient
 # from keys import APP_SECRET_KEY
@@ -650,6 +650,38 @@ def delete_item():
     response = make_response(html)
 
     return response
+
+
+# relists item after expiration
+@app.route('/relist', methods=['POST'])
+def relist():
+    is_authenticated()
+    username = CasClient().authenticate()
+    user_info = get_user_info(username)
+
+    itemid = request.form.get('itemid')
+    print("itemid = " + str(itemid))
+
+    if itemid is None:
+        html = render_template('error.html', message="Cannot find item to relist. Please try again or contact us if the error persists.")
+        response = make_response(html)
+        return response
+
+    success_relist = relist_item(itemid)
+
+    print("success_relist = " + str(success_relist))
+
+    # error handling
+    if (success_relist is None or success_relist is False):
+        html = render_template('error.html', message="Error. This item cannot be relisted right now. Please try again or contact us if the error persists.")
+        response = make_response(html)
+        return response
+
+    html = render_template('success_sell.html')
+    response = make_response(html)
+
+    return response
+
  
 # returns a profile page with user info extracted from netid
 @app.route('/profile', methods=['GET', 'POST'])
