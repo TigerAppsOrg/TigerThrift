@@ -1,3 +1,5 @@
+DATABASE
+
 Our heroku postgreSQL database (tigerthrift) can be accessed via the Heroku CLI from our tigerthrift account. It has three relational tables with columns as follows:
     1) items
         - itemid: sequenced int, primary key
@@ -42,15 +44,21 @@ The data is automatically updated (pushed to db) upon users logging into the sit
     1) manually add their info to users table (netid, email, joined timestamp, phone (unknown), firstname, lastname, full name, and reservation count (0))
     2) add netid to get_user_info() if stmt in app.py
 
+USER INFO API
+
 However, user info is currently extracted from the TigerBook API which may soon be retired, in which case, we should switch to OIT Directory for user info. 
+
+ADMIN INTERVENTION FOR OVERDUE RESERVATIONS
 
 Administrators need to follow up with buyers/sellers where the reservation is way overdue and the seller has not relisted the item. Admin can intervene or
 perhaps iron out the issue underlying the reservation being left incomplete. If this scenario becomes a common issue, might be helpful to add a fourth status
 for inactive items such as these so that they are easy for admin to identify.
 
+MAINTAINING DATABASE AT END OF ACADEMIC YEAR
+
 A user who is not a current Princeton Undergraduate (or was formerly but is not anymore), will not be able to access our site. 
 
-At the end of each year when a clas graduates, developers should:
+At the end of each year when a class graduates, developers should:
     1) Delete any active items (status 0) from the items table that are sold from users who are no longer undergrads.
     2) Delete any currently reserved reservations from the reservations that are (status 1 from the items table) in which the buyernetid or sellernetid is no longer an undergrad.
     3) DO NOT delete user info from users table of graduated students given current implementation (because info still needs to show up for past purchases).
