@@ -662,14 +662,10 @@ def relist():
     itemid = request.form.get('itemid')
     print("itemid = " + str(itemid))
 
-    if itemid is None:
-        html = render_template('error.html', message="Cannot find item to relist. Please try again or contact us if the error persists.")
-        response = make_response(html)
-        return response
-
-    success_relist = relist_item(itemid)
+    success_relist = relist_item(itemid, user_info['netid'])
 
     print("success_relist = " + str(success_relist))
+    print("success_delete = " + str(success_relist))
 
     # error handling
     if (success_relist is None or success_relist is False):

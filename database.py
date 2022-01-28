@@ -237,14 +237,34 @@ def edit_item_db(item, user_info):
 
 # relist item after reservation expiration
 
-def relist_item(itemid):
+def relist_item(itemid, netid):
     DATABASE_URL = os.environ.get('DATABASE_URL')
 
     try:
         with connect (DATABASE_URL, sslmode='require') as connection:
             with closing(connection.cursor()) as cursor:
+                stmt_str = "SELECT reservation_count FROM users WHERE netid = %s"
+                cursor.execute(stmt_str, [netid])
+                res_count = cursor.fetchone()[0]
+                print("old res count", res_count)
+
+                stmt_str = "DELETE FROM reservations where itemid = %s"
+                cursor.execute(stmt_str, [itemid])
+                print("deleted from reservations")
+
+                stmt_str = "UPDATE items SET status=0 WHERE itemid= %s"
+                cursor.execute(stmt_str, [itemid])
+                print("updated items table")
+
+                res_count = res_count - 1
+
+                stmt_str = "UPDATE users SET reservation_count = %s where netid=%s"
+                cursor.execute(stmt_str, [res_count, netid])
+                print("new res_count", res_count)
+
                 stmt_str = ('UPDATE items SET status=0 WHERE itemid=%s;')
                 cursor.execute(stmt_str, [itemid])
+                
                 print("relisted item, changed status in database!")
                 connection.commit()
                 return True
@@ -252,7 +272,7 @@ def relist_item(itemid):
     except Exception as ex:
        print(ex, file=stderr)
        return False
-       
+
 # return item details given an itemid, or false if unsuccessful
 def item_details(itemid):
     DATABASE_URL = os.environ.get('DATABASE_URL')
