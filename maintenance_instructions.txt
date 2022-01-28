@@ -1,0 +1,57 @@
+Our heroku postgreSQL database (tigerthrift) can be accessed via the Heroku CLI from our tigerthrift account. It has three relational tables with columns as follows:
+    1) items
+        - itemid: sequenced int, primary key
+        - type: text
+        - subtype: text
+        - size: 10 char max (text)
+        - gender: 10 char max (text)
+        - price: money
+        - color: text
+        - condition: text
+        - brand: text
+        - desc: text
+        - posted: timestamp without timezone
+        - photolink: text (cloudinary url)
+        - status: int (0 - active, 1 - reserved, 2 - purchased)
+        - sellernetid: text
+        - prodname: text
+        - *photolink1: text (cloudinary url)
+        - *photolink2: text (cloudinary url)
+        - *photolink3: text (cloudinary url)
+        - price flexibility: text
+    2) reservations
+        - itemid: int
+        - buyernetid: text
+        - sellernetid: text
+        - reservedtime: timestamp without timezone
+        - *completedtime: timestamp without timezone
+    3) users
+        - netid: text
+        - email: text
+        - joined: timestamp without timezone
+        - phone: text
+        - first_name: text
+        - last_name: text
+        - full_name: text
+        - reservation_count: int (ranges from 0 - 3)
+
+*these columns can be Null, others cannot.
+
+The data is automatically updated (pushed to db) upon users logging into the site and by user actions.
+*Unless you want to whitelist a user:
+    1) manually add their info to users table (netid, email, joined timestamp, phone (unknown), firstname, lastname, full name, and reservation count (0))
+    2) add netid to get_user_info() if stmt in app.py
+
+However, user info is currently extracted from the TigerBook API which may soon be retired, in which case, we should switch to OIT Directory for user info. 
+
+Administrators need to follow up with buyers/sellers where the reservation is way overdue and the seller has not relisted the item. Admin can intervene or
+perhaps iron out the issue underlying the reservation being left incomplete. If this scenario becomes a common issue, might be helpful to add a fourth status
+for inactive items such as these so that they are easy for admin to identify.
+
+A user who is not a current Princeton Undergraduate (or was formerly but is not anymore), will not be able to access our site. 
+
+At the end of each year when a clas graduates, developers should:
+    1) Delete any active items (status 0) from the items table that are sold from users who are no longer undergrads.
+    2) Delete any currently reserved reservations from the reservations that are (status 1 from the items table) in which the buyernetid or sellernetid is no longer an undergrad.
+    3) DO NOT delete user info from users table of graduated students given current implementation (because info still needs to show up for past purchases).
+* In order to easily execute steps 1 and 2, should maybe think about adding 'class_year' as a column in users table that is updated each time a user logs in.

@@ -22,7 +22,7 @@ sched = BackgroundScheduler({'apscheduler.timezone': 'UTC'})
 def days_between(d1, d2, seller, buyer, item_name):
     d1 = datetime.strptime(str(d1), "%Y-%m-%d %H:%M:%S")
     d2 = datetime.strptime(str(d2), "%Y-%m-%d %H:%M:%S")
-    time_left = timedelta(days=3) - (d1-d2)
+    time_left = timedelta(days=5) - (d1-d2)
     time_split = (re.split('[ :]', str(time_left)))[0]
     print(str(time_split))
     if int(time_split) < 0:
