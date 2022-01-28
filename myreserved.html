@@ -39,14 +39,11 @@
                     {% else %}
                     <p class="card-text" id="info_without_phone">Seller: {{item['seller_full_name']}} ({{item['sellernetid']}})</p>
                     {% endif %}
-                    {% if item['reservation_time_left'] ==  "YOUR RESERVATION HAS EXPIRED! 0 days left" %}
-                        <!-- <p class="card-text" style="height: 150px;"><i style="color: red;"><strong>YOUR RESERVATION HAS EXPIRED!</strong></i><br>Please contact the seller to complete your purchase, or cancel the reservation.</p> -->
-                        {% elif "YOUR RESERVATION WILL EXPIRE IN" in item['reservation_time_left'] %}
+                    {% if "YOUR RESERVATION WILL EXPIRE IN" in item['reservation_time_left'] %}
                         <p class="card-text" style="height: 150px;"><i style="color: red;"><strong>{{item['reservation_time_left']}}</strong></i><br>Please contact the seller to purchase your item, or let us know if the seller is inactive.</i></p>
-                        {% else %}
+                    {% else %}
                         <p class="card-text" style="height: 150px;"><i>{{item['reservation_time_left']}} to complete reservation</i></p>
-                        {% endif %}
-                    {% if item['reservation_time_left'] !=  "YOUR RESERVATION HAS EXPIRED! 0 days left" %}
+                    {% endif %}
                     <form action="/itemdetails" method='GET'>
                         <input type = "hidden" name="itemid" value="{{item['itemid']}}">
                         <button class="card-text btn btn-dark btn-sm px-4">details</button>
@@ -55,7 +52,6 @@
                         <input type = "hidden" name="itemid" value="{{item['itemid']}}">
                         <button type="submit" class="card-text btn btn-sm btn-dark px-4"><p style="color:white" class="m-0">cancel reservation <span style="color: #f28b88;">✖︎</span></p></button>
                     </form>
-                    {% endif %}
                 </div>
             </div>
         {% endif %}

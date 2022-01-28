@@ -264,7 +264,7 @@ def relist_item(itemid, netid):
 
                 stmt_str = ('UPDATE items SET status=0 WHERE itemid=%s;')
                 cursor.execute(stmt_str, [itemid])
-                
+
                 print("relisted item, changed status in database!")
                 connection.commit()
                 return True
@@ -587,6 +587,8 @@ def reserved_items(user_info):
                     dt = now.strftime(f)
                     time_left_to_complete_reservation = days_between(dt, item_ids[item_id])
                     reservation_time_left = ''.join(time_left_to_complete_reservation)
+                    if reservation_time_left == "YOUR RESERVATION HAS EXPIRED! 0 days left":
+                        continue
                     item = {'itemid': item_info[0],
                     'type': item_info[1],
                     'subtype': item_info[2],
