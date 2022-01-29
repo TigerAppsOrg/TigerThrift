@@ -665,7 +665,6 @@ def relist():
     success_relist = relist_item(itemid, user_info['netid'])
 
     print("success_relist = " + str(success_relist))
-    print("success_delete = " + str(success_relist))
 
     # error handling
     if (success_relist is None or success_relist is False):
