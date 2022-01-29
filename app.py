@@ -868,7 +868,13 @@ def itemdetails():
     reserved = reserved_netid(itemid)
     buyer = bought_netid(itemid)
 
-    if not reserved or not buyer:
+    if reserved is not None and (reserved is False or reserved[2] == "expired"):
+        html = render_template('error.html', message="This item may not exist or you don't have access to it. Contact us if this is a mistake.")
+        response = make_response(html)
+        response.set_cookie('route', "/shop")
+        return response
+
+    if reserved is not None and not reserved or not buyer:
         html = render_template('error.html', message="Error loading item information. Please try again or contact us if the error persists.")
         response = make_response(html)
         response.set_cookie('route', "/shop")

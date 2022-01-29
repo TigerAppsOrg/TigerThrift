@@ -502,13 +502,16 @@ def reserved_netid(itemid):
         with connect (DATABASE_URL, sslmode='require') as connection:
             with closing(connection.cursor()) as cursor:
 
-                stmt_str = 'SELECT buyernetid FROM reservations WHERE completedtime IS NULL AND itemid = %s;'
+                stmt_str = 'SELECT buyernetid, reservedtime FROM reservations WHERE completedtime IS NULL AND itemid = %s;'
                 cursor.execute(stmt_str, [itemid])
 
                 row = cursor.fetchone()
 
                 if row is not None:
                     buyernetid = row[0]
+                    reservedtime = row[1]
+                else:
+                    return None
 
                 stmt_str = 'SELECT full_name FROM users WHERE netid = %s;'
                 cursor.execute(stmt_str, [str(buyernetid)])
@@ -518,7 +521,18 @@ def reserved_netid(itemid):
                 if row is not None:
                     buyer_full_name = row[0]
 
-                return (str(buyernetid), str(buyer_full_name))
+                    # get time stamp
+                f = '%Y-%m-%d %H:%M:%S'
+                now = datetime.utcnow()
+                dt = now.strftime(f)
+                time_left_to_complete_reservation = days_between(dt, reservedtime)
+                reservation_time_left = ''.join(time_left_to_complete_reservation)
+                if reservation_time_left == "YOUR RESERVATION HAS EXPIRED! 0 days left":
+                    expired = "expired"
+                else:
+                    expired = "not expired"
+
+                return (str(buyernetid), str(buyer_full_name), expired)
 
     except Exception as ex:
         print(ex, file=stderr)
