@@ -61,7 +61,7 @@
                                         {% if item['reservation_time_left'] == "YOUR RESERVATION HAS EXPIRED! 0 days left" %}
                                         <form action="/relist" onSubmit="return confirm('Are you sure you want to re-list your item? Your item will go back on the marketplace.');" method='POST' class="pt-2">
                                             <input type = "hidden" name="itemid" value="{{item['itemid']}}">
-                                            <button class="card-text btn btn-sm btn-dark px-4 pb-0 "><p style="color:white" class="m-0">re-list <span style="color: #85c285;">+</span></p></button>
+                                            <button class="card-text btn btn-sm btn-dark px-4 pb-0 "><p style="color:white" class="m-0">re-list <span style="color: #FFB300;">+</span></p></button>
                                         </form>
                                         {% endif %}
                                         <form action="/completesale" onSubmit="return confirm('Confirm sale completion. Has the buyer received their item and have you received payment?');" method='POST' class="pt-2">
