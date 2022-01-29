@@ -207,26 +207,26 @@
             if ("{{prev_search}}" != "None") {
                 $("#search").val("{{prev_search}}");
             }
-            if ("{{prev_filter['gender']}}" != "None") {
-                $('#gender_select').val("{{prev_filter['gender']}}");
+            if ("{{prev_filter_lower['gender']}}" != "None") {
+                $('#gender_select').val("{{prev_filter_lower['gender']}}");
             }
-            if ("{{prev_filter['subtype']}}" != "None") {
-                $('#subtype_select').val("{{prev_filter['subtype']}}");
+            if ("{{prev_filter_lower['subtype']}}" != "None") {
+                $('#subtype_select').val("{{prev_filter_lower['subtype']}}");
             } 
-            if ("{{prev_filter['type']}}" != "None") {
-                $('#type_select').val("{{prev_filter['type']}}");
+            if ("{{prev_filter_lower['type']}}" != "None") {
+                $('#type_select').val("{{prev_filter_lower['type']}}");
             }
-            if ("{{prev_filter['size']}}" != "None") {
-                $('#size_select').val("{{prev_filter['size']}}");
+            if ("{{prev_filter_lower['size']}}" != "None") {
+                $('#size_select').val("{{prev_filter_lower['size']}}");
             }
-            if ("{{prev_filter['brand']}}" != "None") {
-                $('#brand_select').val("{{prev_filter['brand']}}");
+            if ("{{prev_filter_lower['brand']}}" != "None") {
+                $('#brand_select').val("{{prev_filter_lower['brand']}}");
             }
-            if ("{{prev_filter['condition']}}" != "None") {
-                $('#condition_select').val("{{prev_filter['condition']}}");
+            if ("{{prev_filter_lower['condition']}}" != "None") {
+                $('#condition_select').val("{{prev_filter_lower['condition']}}");
             }
-            if ("{{prev_filter['color']}}" != "None") {
-                $('#color_select').val("{{prev_filter['color']}}");
+            if ("{{prev_filter_lower['color']}}" != "None") {
+                $('#color_select').val("{{prev_filter_lower['color']}}");
             }
             if ("{{prev_search}}" != "None") {
                 console.log('previous search: ' + '{{prev_search}}')

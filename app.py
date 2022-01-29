@@ -164,7 +164,6 @@ def shop():
         return response
 
     search = request.args.get('search')
-
     gender = request.args.get('gender')
     size = request.args.get('size')
     brand = request.args.get('brand')
@@ -192,6 +191,10 @@ def shop():
         color = ""
     if sort is None:
         sort = "newest to oldest"
+
+    filter_lower = {"gender": gender, "type": type, 
+    "subtype": subtype, "size": size, "condition": condition,
+    "color": color, "brand": brand}
 
     # filter = {"subtype" : "sneakers"} #placeholder
     filter = {"gender": titlecase(gender), "type": titlecase(type), 
@@ -222,12 +225,12 @@ def shop():
     search = urllib.parse.quote(search)
     print("encoded search: "  + search)
 
-    html = render_template('shop.html', items=items, brands=brands, user_info=user_info, prev_search=search, prev_filter=filter, prev_sort=sort)
+    html = render_template('shop.html', items=items, brands=brands, user_info=user_info, prev_search=search, prev_filter=filter, prev_filter_lower = filter_lower,prev_sort=sort)
 
     # set cookies
     response = make_response(html)
     response.set_cookie('search', str(search))
-    response.set_cookie('filter', json.dumps(filter))
+    response.set_cookie('filter', json.dumps(filter_lower))
     response.set_cookie('sort', str(sort))
     response.set_cookie('route', "/shop")
     return response
@@ -430,6 +433,10 @@ def search_results():
 
     sort = request.args.get('sort')
 
+    filter_lower = {"gender": gender, "type": type, 
+    "subtype": subtype, "size": size, "condition": condition,
+    "color": color, "brand": brand}
+
     filter = {"gender": titlecase(gender), "type": titlecase(type), 
     "subtype": titlecase(subtype), "size": size.upper(), "condition": titlecase(condition),
     "color": titlecase(color), "brand": titlecase(brand)}
@@ -458,7 +465,7 @@ def search_results():
 
     response = make_response(html)
     response.set_cookie('search', str(search))
-    response.set_cookie('filter', json.dumps(filter))
+    response.set_cookie('filter', json.dumps(filter_lower))
     response.set_cookie('sort', str(sort))
     response.set_cookie('route', "/shop")
     return response
