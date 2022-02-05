@@ -868,7 +868,12 @@ def itemdetails():
     reserved = reserved_netid(itemid)
     buyer = bought_netid(itemid)
 
-    if reserved is not None and (reserved is False or (reserved[2] == "expired" and item['sellernetid'] != user_info['netid'])):
+    if reserved is not None and (reserved[2] == "expired" and item['sellernetid'] != user_info['netid']):
+        isExpired = True
+    else:
+        isExpired = False
+        
+    if reserved is not None and (reserved is False):
         html = render_template('error.html', message="This item may not exist or you don't have access to it. Contact us if this is a mistake.")
         response = make_response(html)
         response.set_cookie('route', "/shop")
@@ -898,7 +903,7 @@ def itemdetails():
     else:
         isMine = False
 
-    html = render_template('itemdetails.html', item=item, user_info = user_info, prev_search=search, prev_filter=filter, prev_sort=sort, route=route, isMine=isMine)
+    html = render_template('itemdetails.html', item=item, isExpired = isExpired, user_info = user_info, prev_search=search, prev_filter=filter, prev_sort=sort, route=route, isMine=isMine)
     response = make_response(html)
     response.set_cookie('route', "/itemdetails")
     return response

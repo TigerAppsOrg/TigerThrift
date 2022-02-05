@@ -14,10 +14,18 @@
   <body>
     {% include 'header.html' %}
     <div style="padding-left: min(50px, 10%);" id="back_form">
+      {% if route == "/itemdetails" %}
+      <form action="{{route}}" method='GET'>
+        <input type="hidden" value="{{item['itemid']}}" name="itemid">
+        <button type="submit" id="back_details_button" 
+          class="btn btn-white rounded-0" style="font-weight: 600; letter-spacing: 0.1em;">← go back</button>
+      </form>
+      {% else %}
       <form action="{{route}}" method='GET'>
         <button type="submit" id="back_button" 
           class="btn btn-white rounded-0" style="font-weight: 600; letter-spacing: 0.1em;">← go back</button>
       </form>
+      {% endif %}
     </div>
     <div style="padding-left: min(50px, 10%);" id="shop_form">
         <form action="/shop" method='GET'>
@@ -117,7 +125,7 @@
             </form>
           </div>
           {% endif %}
-          {% if item['status'] == 1 and isMine == True %}
+          {% if item['status'] == 1 and isMine == True and isExpired == False %}
           <div class="text-center pt-2">
             <form id="cancel_form" action="cancelsuccess" onSubmit="return confirm('Are you sure you want to cancel your reservation?');"  method='POST'>
                 <input type = "hidden" name="itemid" value="{{item['itemid']}}">
