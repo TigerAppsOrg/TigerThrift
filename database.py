@@ -873,7 +873,7 @@ def search_items(search, filter, sort):
                         stmt_str += "AND size = %s "
                         cmd_args.append(filter['size'])
                     if 'gender' in filter and filter['gender'] is not None and filter["gender"] != '':
-                        stmt_str += "AND gender = %s "
+                        stmt_str += "AND (gender = %s or gender = 'Unisex') "
                         cmd_args.append(filter['gender'])
                     if 'brand' in filter and filter['brand'] is not None and filter["brand"] != '':
                         stmt_str += "AND brand = %s "
