@@ -125,7 +125,7 @@
             </form>
           </div>
           {% endif %}
-          {% if item['status'] == 1 and isMine == True and isExpired == False %}
+          {% if item['status'] == 1 and isMine == True %}
           <div class="text-center pt-2">
             <form id="cancel_form" action="cancelsuccess" onSubmit="return confirm('Are you sure you want to cancel your reservation?');"  method='POST'>
                 <input type = "hidden" name="itemid" value="{{item['itemid']}}">
