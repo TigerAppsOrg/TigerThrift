@@ -2,7 +2,6 @@
 # app.py
 # Author: Katie Chou, Iroha Shirai, Katelyn Rodrigues
 #-----------------------------------------------------------------------
-import requests
 import hashlib
 import os
 import json
@@ -22,20 +21,7 @@ from datetime import datetime
 from database import add_user, get_whitelist_user_info, get_user_phone, add_user_phone, add_item, edit_item_db, reserve_item, search_items, item_details, reserved_items, seller_reservations, items_sold_in_past, past_purchases, get_seller_and_item_info, delete_reserve, complete_reserve, all_brands, remove_item, curr_active_items, reserved_netid, bought_netid, relist_item
 from sendemail import send_buyer_reservation_notification, send_seller_reservation_notification, send_seller_cancellation, send_buyer_cancellation
 from casclient import CasClient
-# from keys import APP_SECRET_KEY
 
-############################################ import Tigerbook API 
-
-from tigerbook_credentials import API_KEY as TIGERBOOK_KEY
-from tigerbook_credentials import USERNAME as TIGERBOOK_USR
-
-class TigerbookCredentialsException(Exception):
-    pass
-
-# TIGERBOOK_IMG="https://tigerbook.herokuapp.com/images/"
-TIGERBOOK_API="https://tigerbook.herokuapp.com/api/v1/undergraduates/"
-
-###########################################
 
 app = Flask(__name__, template_folder = '.')
 app.secret_key = os.environ.get('APP_SECRET_KEY')
