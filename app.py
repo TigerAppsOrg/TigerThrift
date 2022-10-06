@@ -15,6 +15,7 @@ import urllib.parse
 import urllib.request
 from base64 import b64encode
 from flask import Flask, redirect, url_for, request, make_response
+from activedir import ActiveDir
 from titlecase import titlecase
 from flask import render_template
 from datetime import datetime
@@ -85,18 +86,27 @@ def get_user_info(username):
             return user_info
 
         # get info and make sure user is an undergrad
-        r = requests.get(url=urllib.parse.urljoin(TIGERBOOK_API, netid),headers=get_wsse_headers(TIGERBOOK_USR, TIGERBOOK_KEY))
-        # if user is not an undergrad
-        if str(r) == "<Response [404]>":
-            print("NOT AN UNDERGRAD!!!!")
-            raise Exception("not an undergrad")
+        r = ActiveDir().get_user(netid)
+        if not r:
+            err = f"Failed to get user data for {netid}"
+            print(err)
+            raise Exception(err)
+        r = r[0]
 
-        user_info = {'first_name': (r.json())['first_name'],
-        'last_name': (r.json())['last_name'],
-        'full_name': (r.json())['full_name'],
-        'netid': netid,
-        'email': ((r.json())['email']).lower(),
-        'class_year': (r.json())['class_year']}
+        if r["pustatus"] != "undergraduate":
+            err = f"{netid} is not an undergraduate"
+            print(err)
+            raise Exception(err)
+
+        user_info = {
+            "first_name": r["displayname"].split(" ")[0],
+            "last_name": r["sn"],
+            "full_name": r["displayname"],
+            "netid": netid,
+            "email": r["mail"],
+            "class_year": r["department"].split(" ")[-1],
+        }
+
         success_add_user = add_user(user_info)
 
         if not success_add_user:
